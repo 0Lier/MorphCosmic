@@ -1,0 +1,16 @@
+name: DifficultyCosmic
+version: '1.1'
+main: com.cosmicraft.morphcosmic.MorphCosmic
+api-version: '26.2'
+depend: [ProtocolLib]
+
+commands:
+  morph:
+    description: Transformate visualmente en cualquier mob del juego.
+    usage: /morph <mob|off>
+    permission: morphcosmic.morph
+
+permissions:
+  morphcosmic.morph:
+    description: Permite usar el comando /morph
+    default: op

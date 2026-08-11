@@ -1,0 +1,24 @@
+name: DifficultyCosmic
+version: '1.1'
+main: com.cosmicraft.difficultycosmic.DifficultyCosmic
+api-version: '1.20'
+
+commands:
+  dificultad:
+    description: Muestra todos los cambios de dificultad activos en el servidor.
+    usage: /dificultad
+    permission: difficultycosmic.info
+    permission-message: "No tienes permiso para usar este comando."
+  dcspawn:
+    description: "[DEBUG] Spawnea un mob con los efectos de DifficultyCosmic forzados."
+    usage: /dcspawn <zombie_guerrero|spider|cod|creeper_cargado>
+    permission: difficultycosmic.debug
+    permission-message: "No tienes permiso para usar este comando."
+
+permissions:
+  difficultycosmic.info:
+    description: Permite ver la lista de cambios de dificultad.
+    default: true
+  difficultycosmic.debug:
+    description: Permite usar /dcspawn para forzar spawns de debug.
+    default: op

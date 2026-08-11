@@ -1,0 +1,71 @@
+plugins {
+    id 'java'
+    id 'com.gradleup.shadow' version '8.3.5'
+    id 'xyz.jpenilla.run-paper' version '2.3.1'
+}
+
+group = 'com.cosmicraft'
+version = '1.0.0'
+
+def javaVersion = 25
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(javaVersion)
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'papermc-repo'
+        url = 'https://repo.papermc.io/repository/maven-public/'
+    }
+    maven {
+        name = 'dmulloy2-repo'
+        url = 'https://repo.dmulloy2.net/repository/public/'
+    }
+}
+
+dependencies {
+    // API pública de Paper para Minecraft 26.2 (build 60)
+    compileOnly 'io.papermc.paper:paper-api:26.2.build.+'
+    // Solo para compilar contra la API de ProtocolLib; el jar ya lo tenés
+    // instalado como plugin en el server, así que NO se empaqueta (compileOnly).
+    compileOnly 'com.comphenix.protocol:ProtocolLib:5.3.0'
+}
+
+def targetJavaVersion = javaVersion
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    if (targetJavaVersion >= 10) {
+        options.release.set(targetJavaVersion)
+    }
+    options.compilerArgs << "-Xlint:deprecation"
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset = 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+tasks.build {
+    dependsOn 'shadowJar'
+}
+
+// Permite lanzar un servidor Paper de pruebas con ./gradlew runServer
+tasks.runServer {
+    minecraftVersion('26.2')
+}
